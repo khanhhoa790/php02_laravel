@@ -21,4 +21,9 @@ class Client extends Model
         'total_paid',
         'balance',
     ];
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class, 'client_id', 'id');
+    }
 }

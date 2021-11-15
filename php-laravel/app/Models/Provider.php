@@ -18,4 +18,9 @@ class Provider extends Model
         'email',
         'phone',
     ];
+
+    public function receipts()
+    {
+        return $this->hasMany(Receipt::class, 'provider_id', 'id');
+    }
 }

@@ -15,4 +15,14 @@ class PaymentMethod extends Model
         'name',
         'description',
     ];
+
+    public function senderTranfers()
+    {
+        return $this->hasMany(Transfer::class, 'sender_method_id', 'id');
+    }
+
+    public function receiverTranfers()
+    {
+        return $this->hasMany(Transfer::class, 'receiver_method_id', 'id');
+    }
 }

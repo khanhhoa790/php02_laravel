@@ -16,4 +16,19 @@ class Receipt extends Model
         'finalized_at',
         'phone',
     ];
+
+    public function provider()
+    {
+        return $this->belongsTo(Provider::class, 'provider_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function receivedProducts()
+    {
+        return $this->hasMany(ReceivedProduct::class, 'receipt_id', 'id');
+    }
 }

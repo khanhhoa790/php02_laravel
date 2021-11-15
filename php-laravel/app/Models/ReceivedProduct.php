@@ -16,4 +16,15 @@ class ReceivedProduct extends Model
         'stock_defective',
         'phone',
     ];
+
+    public function receipt()
+    {
+        return $this->belongsTo(Receipt::class, 'receipt_id', 'id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
+
 }
