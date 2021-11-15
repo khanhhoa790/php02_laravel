@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Auth\Events\Login;
@@ -22,6 +21,3 @@ Route::get('/login', [LoginController::class, 'login'])->name('login');
 
 Route::post('/login', [LoginController::class, 'authenticate'])->name('Login.post');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-
-Route::get('dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
