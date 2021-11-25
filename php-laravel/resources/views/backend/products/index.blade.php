@@ -1,14 +1,14 @@
 @extends('layouts.master')
-@section('title', 'Categories')
+@section('title', 'Products')
 @section('content')
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <div
         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Categories</h1>
+        <h1 class="h2">Products</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group me-2">
-                <a class="btn btn-sm btn-outline-secondary" href="{{route('categories.create')}}">Create new
-                    category</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{{route('products.create')}}">Create new
+                    product</a>
 
                 <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
                 <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
@@ -21,20 +21,46 @@
     </div>
 
     <div class="table-responsive">
-        <table class="table table-striped table-sm" id="table">
+        <table class="table table-striped table-sm">
             <thead>
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">ID Category </th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Stock_defective</th>
+                    <th scope="col">Price</th>
                     <th scope="col">Created at</th>
                     <th scope="col">Updated at</th>
-                    <th scope="col">-</th>
                 </tr>
             </thead>
             <tbody>
+                @forelse ($products as $product)
+                <tr>
+                    <td>{{$product->id}}</td>
+                    <td>{{$product->name}}</td>
+                    <td>{{$product->description}}</td>
+                    <td>{{$product->product_category_id}}</td>
+                    <td>{{$product->stock}}</td>
+                    <td>{{$product->stock_defective}}</td>
+                    <td>{{$product->price}}</td>
+                    <td>{{$product->created_at}}</td>
+                    <td>{{$product->updated_at}}</td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="9">
+                        <p>No product</p>
+                    </td>
+                </tr>
+                @endforelse
 
             </tbody>
         </table>
+        <div>
+            {{$products->links()}}
+        </div>
     </div>
 </main>
 @stop
@@ -66,43 +92,18 @@
 
 @stop
 
-@section('css')
-<link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet">
-<link href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-
-@stop
-
 @section('js')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
 <script>
 var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'), {
     keyboard: false
-  });
-$(function() {
-    $("#table").on("click",".delete", function(){
-        var id = $(this).attr('data-id');
+});
+$(document).ready(function() {
+    $('.delete').click(function() {
+        var id = $(this).attr('data_id');
         $('#f_delete').attr('action', '/ims/categories/' + id);
         myModal.toggle();
     });
-    var table = $('#table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: '{!! route('categories.data') !!}',
-        "order": [[ 0, "desc" ]],
-        "autoWidth": true,
-        columns: [
-            { data: 'id', name: 'id' },
-            { data: 'name', name: 'name'},
-            { data: 'created_at', name:'created_at'},
-            { data: 'updated_at', name:'updated_at'},
-            { data: 'actions', name: 'actions', orderable: false, searchable: false }
-        ]
-    });
-    table.on( 'draw', function () {
-        feather.replace();
-    } );
 });
 </script>
 

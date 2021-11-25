@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
+use App\Http\Requests\Admin\CategotyRequest;
+use Illuminate\Support\Facades\Redirect;
+use Yajra\DataTables\Facades\DataTables;
 
 class CategotyController extends Controller
 {
@@ -15,9 +18,7 @@ class CategotyController extends Controller
      */
     public function index()
     {
-        $categories = ProductCategory::paginate();
-
-        return view('backend.categories.index', compact('categories'));
+        return view('backend.categories.index');
     }
 
     /**
@@ -27,7 +28,7 @@ class CategotyController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.categories.create');
     }
 
     /**
@@ -36,9 +37,13 @@ class CategotyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategotyRequest $request)
     {
-        //
+        $name = $request->input('name');
+
+        ProductCategory::create(['name'=>$name]);
+
+        return redirect(route('categories.index'));
     }
 
     /**
@@ -47,9 +52,24 @@ class CategotyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+     public function data()
+    {
+        $categories = ProductCategory::select(['id','name','created_at','updated_at']);
+
+        return DataTables::of($categories->get())
+        ->addColumn('actions',function($category) {
+            $actions = '<a href='. route('categories.show', $category->id) .' title="view category"><i data-feather="eye"></i></a>
+                        <a href='. route('categories.edit', $category->id) .' title="update category"><i data-feather="edit"></i></a>
+                        <a href="javascript:;" class="delete link-danger" data-id="'.$category->id. '" title="delete category"><i data-feather="trash-2"></i></a>';
+            return $actions;
+        })
+        ->rawColumns(['actions'])
+        ->make(true);
+    }
     public function show($id)
     {
-        //
+        return __FUNCTION__;
     }
 
     /**
@@ -60,7 +80,13 @@ class CategotyController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category= ProductCategory::find($id);
+        if($category)
+        {
+            return view('backend.categories.edit', compact('category'));
+        }
+        
+        return redirect(route('categories.index'))->with('msg', 'Can not find category');
     }
 
     /**
@@ -70,9 +96,16 @@ class CategotyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CategotyRequest $request, $id)
     {
-        //
+        $category = ProductCategory::find($id);
+        if($category)
+        {
+            $category->name = $request->input('name');
+            $category->save();
+        }
+        return redirect(route('categories.index'))->with('msg', 'Update Sucessful!');
+        
     }
 
     /**
@@ -83,6 +116,9 @@ class CategotyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        ProductCategory::destroy($id);
+
+        return redirect(route('categories.index'))
+        ->with('msg', 'Delete successful!');
     }
 }

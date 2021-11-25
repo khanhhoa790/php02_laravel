@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ProductRequest;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -14,7 +16,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::paginate(10);
+
+        return view('backend.products.index', compact('products'));
     }
 
     /**
@@ -24,7 +28,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.products.create');
     }
 
     /**
@@ -33,9 +37,23 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        //
+        $name = $request->input('name');
+        $des = $request->input('description');
+        $idCate = $request->input('idCate');
+        $stock = $request->input('stock');
+        $stockdef = $request->input('stockdef');
+        $price = $request->input('price');
+
+        ProductController::create(['name'=>$name]);
+        ProductController::create(['description'=>$des]);
+        ProductController::create(['product_category_id'=>$idCate]);
+        ProductController::create(['price'=>$stock]);
+        ProductController::create(['stock'=>$stockdef]);
+        ProductController::create(['stock_defective'=>$price]);
+
+        return redirect(route('products.index'));
     }
 
     /**
