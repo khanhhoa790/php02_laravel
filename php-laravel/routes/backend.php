@@ -20,10 +20,11 @@ Route::prefix('categories')->name('categories.')->group(function(){
 });
 Route::prefix('products')->name('products.')->group(function(){
     Route::get('/', [ProductController::class, 'index'])->name('index');
+    Route::get('/data', [ProductController::class, 'data'])->name('data');
     Route::get('/create', [ProductController::class, 'create'])->name('create');
-    Route::post('/create', [CategotyController::class, 'store'])->name('store');
-    // Route::get('/{id}edit', [CategotyController::class, 'edit'])->name('edit');
-    // Route::put('/{id}edit', [CategotyController::class, 'update'])->name('update');
-    // Route::delete('/{id}', [CategotyController::class, 'destroy'])->name('delete');
-});
-  
+    Route::post('/create', [ProductController::class, 'store'])->name('store');
+    Route::get('/{id}/show', [ProductController::class, 'show'])->name('show');
+    Route::get('/{id}/edit', [ProductController::class, 'edit'])->name('edit');
+    Route::put('/{id}/edit', [ProductController::class, 'update'])->name('update');
+    Route::delete('/{id}/', [ProductController::class, 'destroy'])->name('delete');});
+

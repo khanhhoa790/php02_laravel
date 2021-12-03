@@ -67,8 +67,8 @@
 @stop
 
 @section('css')
-<link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet">
-<link href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 
 @stop
 
@@ -77,33 +77,10 @@
 <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
 <script>
-var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'), {
-    keyboard: false
-  });
-$(function() {
-    $("#table").on("click",".delete", function(){
-        var id = $(this).attr('data-id');
-        $('#f_delete').attr('action', '/ims/categories/' + id);
-        myModal.toggle();
-    });
-    var table = $('#table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: '{!! route('categories.data') !!}',
-        "order": [[ 0, "desc" ]],
-        "autoWidth": true,
-        columns: [
-            { data: 'id', name: 'id' },
-            { data: 'name', name: 'name'},
-            { data: 'created_at', name:'created_at'},
-            { data: 'updated_at', name:'updated_at'},
-            { data: 'actions', name: 'actions', orderable: false, searchable: false }
-        ]
-    });
-    table.on( 'draw', function () {
-        feather.replace();
-    } );
-});
+    categories_data_url = '{!! route('categories.data') !!}';
+</script>
+<script src="{{asset('js/category-index.js')}}">
+
 </script>
 
 @stop

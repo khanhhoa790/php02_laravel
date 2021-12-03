@@ -1,9 +1,9 @@
 @extends('layouts.master')
-@section('title', 'Create a new product')
+@section('title', 'Edit product')
 @section('content')
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Create a new product</h1>
+            <h1 class="h2">Edit product {{$product->name}}</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group me-2">
                     <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
@@ -17,8 +17,9 @@
         </div>
 
         <div class="table-responsive">
-            <form method="post" action="{{ route('products.store') }}" enctype="multipart/form-data">
+            <form method="post" action="{{ route('products.update',$product->id) }}" enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
                 <div class="mb-3">
                     <label for="nameInput" class="form-label">Product Name</label>
                     <input type="text" name="name" value="{{ old('name', '') }}"
@@ -57,7 +58,7 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="nameInput" class="form-label">Stock defective</label>
+                    <label for="nameInput" class="form-label">Stocke defective</label>
                     <input type="text" name="stock_defective" value="{{ old('stock_defective', '') }}"
                            class="form-control @error('stock_defective') is-invalid @enderror" id="nameInput">
                     @error('stock_defective')
